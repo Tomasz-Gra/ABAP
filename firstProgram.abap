@@ -1,2 +1,5 @@
-REPORT ZHELLO1. 
-WRITE 'Hello World'.
+REPORT Z_Test123_01. 
+
+DATA: W_NUR(10) TYPE N.
+      MOVE 50 TO W_NUR.
+      WRITE W_NUR NO-ZERO.
