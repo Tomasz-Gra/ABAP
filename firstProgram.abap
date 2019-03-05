@@ -1,5 +1,0 @@
-REPORT Z_FirstReport. 
-
-DATA: W_NUMBER(10) TYPE N.
-      MOVE 50 TO W_NUMBER.
-      WRITE W_NUMBER NO-ZERO.
