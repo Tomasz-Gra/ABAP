@@ -10,7 +10,6 @@ TYPES: BEGIN OF gts_string,
 
 TYPES: BEGIN OF gts_compare,
           lv_com_str      TYPE string,
-          lv_index        LIKE sy-tabix,
        END OF gts_compare.
 
 PARAMETERS: lp_usrin      TYPE i,
@@ -22,32 +21,32 @@ DATA: it_first_table      TYPE TABLE OF gts_string,
       it_compare_table    TYPE TABLE OF gts_compare.
 
 it_first_table = VALUE #(
-                          ( lv_str = 'Lorem ipsum dolor sit amet'   )
-                          ( lv_str = 'Consectetur adipiscing elit'  )
-                          ( lv_str = 'Proin nibh augue, suscipit a, scelerisque sed'   )
-                          ( lv_str = 'Etiam pellentesque aliquet tellus'  )
-                          ( lv_str = 'Phasellus pharetra nulla ac diam'   )
-                          ( lv_str = 'Quisque semper justo at risus'   )
-                          ( lv_str = 'Donec venenatis, turpis vel hendrerit interdum'    )
-                          ( lv_str = 'Nam congue, pede vitae dapibus aliquet'   )
-                          ( lv_str = 'Etiam sit amet lectus quis est congue mollis'   )
-                          ( lv_str = 'Phasellus congue lacus eget neque'   )
-                          ( lv_str = 'Phasellus ornare, ante vitae consectetuer consequat'   )
+                          ( lv_str = 'Lorem ipsum dolor sit amet' )
+                          ( lv_str = 'Consectetur adipiscing elit' )
+                          ( lv_str = 'Proin nibh augue, suscipit a, scelerisque sed' )
+                          ( lv_str = 'Etiam pellentesque aliquet tellus' )
+                          ( lv_str = 'Phasellus pharetra nulla ac diam' )
+                          ( lv_str = 'Quisque semper justo at risus' )
+                          ( lv_str = 'Donec venenatis, turpis vel hendrerit interdum' )
+                          ( lv_str = 'Nam congue, pede vitae dapibus aliquet' )
+                          ( lv_str = 'Etiam sit amet lectus quis est congue mollis' )
+                          ( lv_str = 'Phasellus congue lacus eget neque' )
+                          ( lv_str = 'Phasellus ornare, ante vitae consectetuer consequat' )
                           ( lv_str = 'Praesent sodales velit quis augue' )
                         ).
 
 it_second_table = VALUE #(
-                          ( lv_str = 'Lorem ipsum dolor sit amet'   )
-                          ( lv_str = 'Consectetur adipiscing elit'  )
-                          ( lv_str = 'Proin nibh augue, suscipit a, scelerisque sed'   )
-                          ( lv_str = 'Etiam pellentesque aliquet tellus'  )
-                          ( lv_str = 'Phasellus pharetra nulla ac diam'   )
-                          ( lv_str = 'Quisque semper justo at risus'   )
-                          ( lv_str = 'Donec venenatis, turpis vel hendrerit interdum'    )
-                          ( lv_str = 'Nam congue, pede vitae dapibus aliquet'   )
-                          ( lv_str = 'Etiam sit amet lectus quis est congue mollis'   )
-                          ( lv_str = 'Phasellus congue lacus eget neque'   )
-                          ( lv_str = 'Phasellus ornare, ante vitae consectetuer consequat'   )
+                          ( lv_str = 'Lorem ipsum dolor sit amet' )
+                          ( lv_str = 'Consectetur adipiscing elit' )
+                          ( lv_str = 'Proin nibh augue, suscipit a, scelerisque sed' )
+                          ( lv_str = 'Etiam pellentesque aliquet tellus' )
+                          ( lv_str = 'Phasellus pharetra nulla ac diam' )
+                          ( lv_str = 'Quisque semper justo at risus' )
+                          ( lv_str = 'Donec venenatis, turpis vel hendrerit interdum' )
+                          ( lv_str = 'Nam congue, pede vitae dapibus aliquet' )
+                          ( lv_str = 'Etiam sit amet lectus quis est congue mollis' )
+                          ( lv_str = 'Consectetur adipiscing elit' )
+                          ( lv_str = 'Phasellus ornare, ante vitae consectetuer consequat' )
                           ( lv_str = 'Praesent sodales velit quis augue' )
                          ).
 
@@ -76,15 +75,34 @@ FORM compare_tables.
     lv_itr = lines( it_second_table ).
   ENDIF.
 
-  WRITE: 'I''m searching for', lp_usrin LEFT-JUSTIFIED, '. index ...', /.
+  WRITE: 'I''m searching for',
+         lp_usrin LEFT-JUSTIFIED,
+         '. index ...'.
+         NEW-LINE.
+  WRITE: 'It seems that value of ', lp_usrin LEFT-JUSTIFIED,
+         '. index is: ', lv_ft_rec-lv_str COLOR 3.
+         NEW-LINE.
+  WRITE: /,'I''m comparing values ...'. NEW-LINE.
+  WRITE: 'Results are ...',/,
+         /1 sy-uline(83).
 
   WHILE sy-index <= lv_itr.
     READ TABLE it_second_table INDEX sy-index INTO lv_st_rec.
 
     IF lv_ft_rec EQ lv_st_rec.
-      WRITE: / 'Entry from first table', 'IS FOUND ' COLOR 5, 'on ', sy-index LEFT-JUSTIFIED, '       . index of second table.' LEFT-JUSTIFIED, /1 sy-uline(80).
+      WRITE:   /1 sy-vline,'Entry from first table',
+               'IS FOUND ' COLOR 5,
+               '    on ', sy-index LEFT-JUSTIFIED,
+               '   . index of second table.' LEFT-JUSTIFIED,
+               /1 sy-vline,'Value of this index is: ', lv_st_rec-lv_str COLOR 3,
+               /1 sy-uline(83).
     ELSE.
-      WRITE: / 'Entry from first table', 'IS NOT FOUND ' COLOR 6, 'on ', sy-index LEFT-JUSTIFIED, '   . index of second table.' LEFT-JUSTIFIED, /1 sy-uline(80).
+      WRITE:   /1 sy-vline,'Entry from first table',
+               'IS NOT FOUND ' COLOR 6,
+               'on ', sy-index LEFT-JUSTIFIED,
+               '   . index of second table.' LEFT-JUSTIFIED,
+               /1 sy-vline,'Value of this index is: ', lv_st_rec-lv_str COLOR 3,
+               /1 sy-uline(83).
     ENDIF.
   ENDWHILE.
 ENDFORM.
